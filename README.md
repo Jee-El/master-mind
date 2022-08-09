@@ -1,5 +1,9 @@
 # Master Mind
 
+## Try it here
+
+[Replit](https://replit.com/@Jee-El/master-mind?v=1)
+
 There are two modes to play :
 
 - Single Player :
