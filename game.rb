@@ -19,7 +19,7 @@ module MasterMind
         puts 'The secret code was :'
         board.draw(winner.last)
       end
-      announce_winner(*winner)
+      announce_winner(*winner[0, 2])
     end
 
     def announce_winner(winner, is_code_broken)
