@@ -2,6 +2,7 @@
 
 require 'tty-prompt'
 require 'tty-box'
+require 'colorize'
 
 require_relative './board'
 
@@ -16,7 +17,7 @@ module MasterMind
     end
 
     def start
-      clarify_rules(Board.new)
+      clarify_rules
       @settings[:game_mode] = game_mode
       @settings[:rounds] = rounds
       @settings[:human_player_role] = human_player_role if @settings[:game_mode] == 'single player'
@@ -24,11 +25,12 @@ module MasterMind
 
     private
 
-    def clarify_rules(board)
+    def clarify_rules
       puts
-      puts TTY::Box.frame("#{board.draw('123456', 1, 1)}"\
+      puts TTY::Box.frame("#{Board.new.draw('123456', 1, 1)}"\
                           "- Code maker makes a pattern of four colors, e.g: rrgg, 2211 or redredgreengreen,\n\n"\
                           "- The code breaker has to figure out this pattern,\n\n"\
+                          "- Available numbers/colors : 1-6 | #{'Green'.green} #{'Red'.red} #{'Yellow'.yellow} #{'Blue'.blue} #{'Magenta'.magenta} #{'Cyan'.cyan}\n\n"\
                           "- The code maker gives hints, represented by black/white rectangle,\n\n"\
                           "- Each black one & each white one implies that one of the colors guessed is\n"\
                           "  in the pattern made by the code maker,\n\n"\

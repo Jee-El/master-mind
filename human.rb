@@ -54,7 +54,8 @@ module MasterMind
                               "- 4 numbers, each number represents a color\n\n"\
                               "- 4 letters, each letter represents the first letter of the color name\n\n"\
                               "- 4 words, each word must be a color name\n\n"\
-                              "Available colors : Green, Red, Yellow, Blue, Magenta, Cyan\n\n"
+                              "Available numbers/colors : 1-6 | #{'Green'.green} #{'Red'.red} #{'Yellow'.yellow} "\
+                              "#{'Blue'.blue} #{'Magenta'.magenta} #{'Cyan'.cyan}\n\n"
       end
     end
   end
