@@ -6,7 +6,7 @@
 
   [Replit](https://replit.com/@Jee-El/master-mind?v=1)
 
-Login required :
+- Login required :
 
   [![Run on Repl.it](https://replit.com/badge/github/Jee-El/master-mind)](https://replit.com/new/github/Jee-El/master-mind)
 
