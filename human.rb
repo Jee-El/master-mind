@@ -36,7 +36,7 @@ module MasterMind
       hints_giver = HintsGiver.new
       rounds.times do
         puts
-        guess = @translator.translate(self.guess)
+        guess = @translator.translate(self.guess.gsub(' ', ''))
         hints = hints_giver.give(guess, code_maker.secret_code)
         board.draw(guess, *hints)
         return [@player_name, true] if hints == [4, 0]
@@ -49,7 +49,8 @@ module MasterMind
     def guess
       @prompt.ask('Enter a pattern of 4 numbers or colors :', required: true) do |q|
         q.modify :down
-        q.validate(/^((\d{4})|([grybmc]{4})|((green|red|yellow|blue|magenta|cyan){4}))$/)
+        q.modify
+        q.validate(/^(((\s*\d\s*){4})|((\s*[grybmc]\s*){4})|((\s*green\s*|\s*red\s*|\s*yellow\s*|\s*blue\s*|\s*magenta\s*|\s*cyan\s*){4}))$/)
         q.messages[:valid?] = "The pattern must be made either of :\n\n"\
                               "- 4 numbers, each number represents a color\n\n"\
                               "- 4 letters, each letter represents the first letter of the color name\n\n"\

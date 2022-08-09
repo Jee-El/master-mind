@@ -37,10 +37,11 @@ module MasterMind
     end
 
     def colors_names_to_numbers(guess)
-      guess.chars.each do |char|
-        guess.gsub!(char, NUMBERS_BY_COLORS_NAMES[char])
+      guess = guess.scan(/green|red|yellow|blue|magenta|cyan/)
+      guess.map! do |word|
+        NUMBERS_BY_COLORS_NAMES[word]
       end
-      guess
+      guess.join
     end
   end
 end
