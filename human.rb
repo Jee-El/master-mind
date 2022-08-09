@@ -1,43 +1,61 @@
 # frozen_string_literal: true
 
-require_relative './messages'
-require_relative './player'
+require 'tty-prompt'
+require_relative './hints'
+require_relative './translator'
 
 module MasterMind
   # The human player
   class Human
-    attr_reader :secret_code
+    attr_reader :secret_code, :player_name
 
-    def make_secret_code(multiplayer: false)
-      # @secret_code = ask_for_secret_code(multiplayer)
-      p @secret_code = Array.new(4) { [*(1..6)].sample }.join
+    def initialize(is_multiplayer, first_or_second_player = nil)
+      @translator = Translator.new
+      @prompt = TTY::Prompt.new
+      if is_multiplayer
+        @player_name = @prompt.ask("Enter the #{first_or_second_player} player's name :",
+                                   default: "Human #{%w[first second].index(first_or_second_player) + 1}")
+      else
+        @player_name = @prompt.ask('Enter your name :', default: 'Human')
+      end
+      puts
+    end
+
+    def make_secret_code(is_multiplayer)
+      puts
+      @secret_code = if is_multiplayer
+                       @prompt.mask('The code maker must enter the secret code :')
+                     else
+                       @prompt.ask('Enter your secret code :')
+                     end
+      @secret_code = @translator.translate(@secret_code)
+      puts
     end
 
     def break_secret_code(code_maker, rounds, board)
+      hints_giver = HintsGiver.new
       rounds.times do
-        puts 'enter 4 nums'
-        guess = make_guess
-        board.draw_guess(guess)
-        hints = hints(guess, code_maker.secret_code)
-        board.draw_hints(*hints)
-        return announce_winner('Human', true) if hints == [4, 0]
+        puts
+        guess = @translator.translate(self.guess)
+        hints = hints_giver.give(guess, code_maker.secret_code)
+        board.draw(guess, *hints)
+        return [@player_name, true] if hints == [4, 0]
       end
-      board.draw_guess(code_maker.secret_code)
-      announce_winner('computer', false)
+      [code_maker.player_name, false, code_maker.secret_code]
     end
 
     private
 
-    include Messages
-    include Hints
-
-    def make_guess
-      guess = gets.chomp
-      until guess.length == 4 && guess.split('').map(&:to_i).join == guess
-        puts 'enter appropriate secret_code'
-        guess = gets.chomp
+    def guess
+      @prompt.ask('Enter a pattern of 4 numbers or colors :', required: true) do |q|
+        q.modify :down
+        q.validate(/^((\d{4})|([grybmc]{4})|((green|red|yellow|blue|magenta|cyan){4}))$/)
+        q.messages[:valid?] = "The pattern must be made either of :\n\n"\
+                              "- 4 numbers, each number represents a color\n\n"\
+                              "- 4 letters, each letter represents the first letter of the color name\n\n"\
+                              "- 4 words, each word must be a color name\n\n"\
+                              "Available colors : Green, Red, Yellow, Blue, Magenta, Cyan\n\n"
       end
-      guess
     end
   end
 end

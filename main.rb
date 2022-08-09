@@ -16,10 +16,4 @@ def start_game
   end
   game.play
 end
-# start_game
-
-i = 0
-while i < 10
-  MasterMind::SinglePlayerGame.new(10, 'code maker').play
-  i += 1
-end
+start_game

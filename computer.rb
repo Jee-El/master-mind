@@ -1,15 +1,20 @@
 # frozen_string_literal: true
 
-require_relative './messages'
-require_relative './player'
+require 'tty-prompt'
+require_relative './hints'
 
 module MasterMind
   # The computer player
   class Computer
-    attr_reader :secret_code
+    attr_reader :secret_code, :player_name
+
+    def initialize
+      @prompt = TTY::Prompt.new
+      @player_name = 'Computer'
+    end
 
     def make_secret_code
-      p @secret_code = Array.new(4) { [*(1..6)].sample }.join
+      @secret_code = Array.new(4) { [*(1..6)].sample }.join
     end
 
     def break_secret_code(code_maker, rounds, board)
@@ -19,26 +24,37 @@ module MasterMind
       rounds.times do
         @guess = make_guess
         @made_guesses += 1
-        board.draw_guess(@guess)
-        @hints = hints(@guess, code_maker.secret_code)
-        board.draw_hints(@hints)
-        return announce_winner('Computer', true) if @hints == [4, 0]
+        @hints = @hints_giver.give(@guess, code_maker.secret_code)
+        board.draw(@guess, *@hints)
+        return [@player_name, true] if @hints == [4, 0]
       end
-      board.draw_guess(code_maker.secret_code)
-      announce_winner('Human', false)
+      [code_maker.player_name, false, code_maker.secret_code]
     end
 
     private
 
-    include Messages
-    include Hints
-
     def setup_for_breaking_secret_code
+      @hints_giver = HintsGiver.new
+      clarify_that_the_computer_is_guessing
+      build_all_possible_codes
+      build_all_possible_hints
+    end
+
+    def build_all_possible_codes
       @all_codes = [*(1..6)].repeated_permutation(4).to_a.map(&:join)
+    end
+
+    def build_all_possible_hints
       @all_hints = Hash.new { |h, k| h[k] = {} }
       @all_codes.product(@all_codes).each do |guess, secret_code|
-        @all_hints[guess][secret_code] = hints(guess, secret_code)
+        @all_hints[guess][secret_code] = @hints_giver.give(guess, secret_code)
       end
+    end
+
+    def clarify_that_the_computer_is_guessing
+      puts
+      @prompt.say('This might take a while, the computer is thinking...')
+      puts
     end
 
     def make_guess
