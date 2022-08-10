@@ -14,9 +14,15 @@ module MasterMind
       '8' => :white
     }.freeze
 
-    def draw(guess, black_pegs = 0, white_pegs = 0)
+    def initialize
+      @board = []
+    end
+
+    def draw(guess, black_pegs, white_pegs, has_to_show_secret_code: false)
       puts
-      puts "#{draw_guess(guess)} | #{draw_hints(black_pegs, white_pegs)}"
+      @board << "#{draw_guess(guess)} | #{draw_hints(black_pegs, white_pegs)}"
+      puts has_to_show_secret_code ? @board.last : @board
+      @board << ''
     end
 
     private

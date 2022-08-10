@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MasterMind
   # Turns user input into numbers
   class Translator
@@ -30,18 +32,16 @@ module MasterMind
     private
 
     def colors_initials_to_numbers(guess)
-      guess.chars.each do |char|
-        guess.gsub!(char, NUMBERS_BY_COLORS_INITIALS[char])
-      end
-      guess
+      guess.chars.map do |char|
+        NUMBERS_BY_COLORS_INITIALS[char]
+      end.join
     end
 
     def colors_names_to_numbers(guess)
       guess = guess.scan(/green|red|yellow|blue|magenta|cyan/)
-      guess.map! do |word|
+      guess.map do |word|
         NUMBERS_BY_COLORS_NAMES[word]
-      end
-      guess.join
+      end.join
     end
   end
 end

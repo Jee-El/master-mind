@@ -2,15 +2,22 @@
 
 require 'tty-prompt'
 require_relative './hints'
+require_relative './display'
 
 module MasterMind
-  # The computer player
+  # The computer players
   class Computer
     attr_reader :secret_code, :player_name
 
-    def initialize
+    include Display
+
+    def initialize(human_player_role)
       @prompt = TTY::Prompt.new
       @player_name = 'Computer'
+      if human_player_role == 'code maker'
+        clarify_that_the_computer_is_guessing
+        setup_for_breaking_secret_code
+      end
     end
 
     def make_secret_code
@@ -18,15 +25,15 @@ module MasterMind
     end
 
     def break_secret_code(code_maker, rounds, board)
-      setup_for_breaking_secret_code
-
+      make_copies_of_hints_and_codes
       @made_guesses = 0
       rounds.times do
         @guess = make_guess
         @made_guesses += 1
         @hints = @hints_giver.give(@guess, code_maker.secret_code)
+        clear_screen
         board.draw(@guess, *@hints)
-        return [@player_name, true] if @hints == [4, 0]
+        return [player_name, true] if @hints == [4, 0]
       end
       [code_maker.player_name, false, code_maker.secret_code]
     end
@@ -35,7 +42,6 @@ module MasterMind
 
     def setup_for_breaking_secret_code
       @hints_giver = HintsGiver.new
-      clarify_that_the_computer_is_guessing
       build_all_possible_codes
       build_all_possible_hints
     end
@@ -49,12 +55,12 @@ module MasterMind
       @all_codes.product(@all_codes).each do |guess, secret_code|
         @all_hints[guess][secret_code] = @hints_giver.give(guess, secret_code)
       end
+      @all_codes.to_set
     end
 
-    def clarify_that_the_computer_is_guessing
-      puts
-      @prompt.say('This might take a while, the computer is thinking...')
-      puts
+    def make_copies_of_hints_and_codes
+      @all_possible_codes = @all_codes.dup
+      @all_possible_hints = @all_hints.dup
     end
 
     def make_guess
@@ -67,16 +73,16 @@ module MasterMind
     end
 
     def remove_impossible_guesses
-      @all_codes.filter! { |code| @all_hints.dig(@guess, code) == @hints }
+      @all_possible_codes.keep_if { |code| @all_possible_hints.dig(@guess, code) == @hints }
     end
 
     def knuth_algorithm(best_score = Float::INFINITY, next_guess = nil)
-      @all_hints.each do |guess, hints_by_secret_codes|
+      @all_possible_hints.each do |guess, hints_by_secret_codes|
         remove_impossible_secret_codes(guess, hints_by_secret_codes)
 
         score = highest_frequency(hints_by_secret_codes)
 
-        if @all_codes.include?(guess) && best_score > score
+        if @all_possible_codes.include?(guess) && best_score > score
           best_score = score
           next_guess = guess
         end
@@ -86,9 +92,9 @@ module MasterMind
 
     def remove_impossible_secret_codes(guess, hints_by_secret_codes)
       hints_by_secret_codes = hints_by_secret_codes.filter do |secret_code, _hint|
-        @all_codes.include?(secret_code)
+        @all_possible_codes.include?(secret_code)
       end
-      @all_hints[guess] = hints_by_secret_codes
+      @all_possible_hints[guess] = hints_by_secret_codes
     end
 
     def hints_frequency(hints_by_secret_codes)

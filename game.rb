@@ -1,36 +1,37 @@
 # frozen_string_literal: true
 
+require 'tty-prompt'
+
 require_relative './board'
+require_relative './display'
 
 module MasterMind
   # A game of master mind
   class Game
+    include Display
+
+    def play_again?
+      TTY::Prompt.new.yes?('Play again?')
+    end
+
     private
 
-    attr_reader :board
+    attr_reader :board, :player_one, :player_two
 
-    def initialize
+    def initialize(player_one, player_two)
       @board = Board.new
+      # player_one is always of Human class
+      @player_one = player_one
+      @player_two = player_two
     end
 
     def game_over(winner)
       unless winner[1]
         puts
         puts 'The secret code was :'
-        board.draw(winner.last)
+        board.draw(winner.last, 0, 0, has_to_show_secret_code: true)
       end
       announce_winner(*winner[0, 2])
-    end
-
-    def announce_winner(winner, is_code_broken)
-      bottom_text = " The code was #{is_code_broken ? '' : 'not '}broken! "
-      puts
-      puts TTY::Box.frame(winner,
-                          padding: [1, 1],
-                          align: :center,
-                          border: :ascii,
-                          title: { top_center: 'The Winner Is', bottom_center: bottom_text })
-      puts
     end
   end
 end

@@ -6,22 +6,16 @@ require_relative './human'
 module MasterMind
   # human vs human
   class MultiplayerGame < Game
-    def initialize(rounds)
-      super()
+    def initialize(player_one, player_two, rounds)
+      super(player_one, player_two)
       @rounds = rounds
-
-      @players = [Human.new(true, 'first'), Human.new(true, 'second')]
     end
 
     def play
-      @players[0].make_secret_code(true)
+      player_one.make_secret_code(true)
       clear_screen
-      winner = @players[1].break_secret_code(@players[0], @rounds, board)
+      winner = player_two.break_secret_code(player_one, @rounds, board)
       game_over(winner)
-    end
-
-    def clear_screen
-      puts "\e[1;1H\e[2J"
     end
   end
 end

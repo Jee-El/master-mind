@@ -3,11 +3,14 @@
 require 'tty-prompt'
 require_relative './hints'
 require_relative './translator'
+require_relative './display'
 
 module MasterMind
   # The human player
   class Human
     attr_reader :secret_code, :player_name
+
+    include Display
 
     def initialize(is_multiplayer, first_or_second_player = nil)
       @translator = Translator.new
@@ -36,10 +39,11 @@ module MasterMind
       hints_giver = HintsGiver.new
       rounds.times do
         puts
-        guess = @translator.translate(self.guess.gsub(' ', ''))
+        guess = @translator.translate(self.guess)
         hints = hints_giver.give(guess, code_maker.secret_code)
+        clear_screen
         board.draw(guess, *hints)
-        return [@player_name, true] if hints == [4, 0]
+        return [player_name, true] if hints == [4, 0]
       end
       [code_maker.player_name, false, code_maker.secret_code]
     end
@@ -56,8 +60,8 @@ module MasterMind
                               "- 4 letters, each letter represents the first letter of the color name\n\n"\
                               "- 4 words, each word must be a color name\n\n"\
                               "Available numbers/colors : 1-6 | #{'Green'.green} #{'Red'.red} #{'Yellow'.yellow} "\
-                              "#{'Blue'.blue} #{'Magenta'.magenta} #{'Cyan'.cyan}\n\n"
-      end
+                              "#{'Blue'.blue} #{'Magenta'.magenta} #{'Cyan'.cyan}\n\n\n"
+      end.gsub(' ', '')
     end
   end
 end

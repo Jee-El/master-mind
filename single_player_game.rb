@@ -7,24 +7,22 @@ require_relative './computer'
 module MasterMind
   # human vs computer
   class SinglePlayerGame < Game
-    def initialize(rounds, role)
-      super()
+    def initialize(player_one, player_two, rounds, role)
+      # player_one is always of Human class
+      super(player_one, player_two)
 
       @rounds = rounds
       @role = role
-
-      @human_player = Human.new(false)
-      @computer_player = Computer.new
     end
 
     def play
       case @role
       when 'code maker'
-        @human_player.make_secret_code(false)
-        winner = @computer_player.break_secret_code(@human_player, @rounds, board)
+        player_one.make_secret_code(false)
+        winner = player_two.break_secret_code(player_one, @rounds, board)
       when 'code breaker'
-        @computer_player.make_secret_code
-        winner = @human_player.break_secret_code(@computer_player, @rounds, board)
+        player_two.make_secret_code
+        winner = player_one.break_secret_code(player_two, @rounds, board)
       end
       game_over(winner)
     end

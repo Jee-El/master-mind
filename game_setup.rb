@@ -5,43 +5,75 @@ require 'tty-box'
 require 'colorize'
 
 require_relative './board'
+require_relative './display'
+require_relative './single_player_game'
+require_relative './multiplayer_game'
 
 module MasterMind
   # Setup game mode, human player role, rounds to play
   class GameSetup
     attr_reader :settings
 
+    include Display
+
     def initialize
       @settings = {}
       @prompt = TTY::Prompt.new
     end
 
-    def start
+    def build_game
       clarify_rules
       @settings[:game_mode] = game_mode
       @settings[:rounds] = rounds
       @settings[:human_player_role] = human_player_role if @settings[:game_mode] == 'single player'
+      build_players
     end
 
     private
 
+    def build_players
+      case @settings[:game_mode]
+      when 'single player'
+        @human_player = Human.new(false)
+        @computer_player = Computer.new(@settings[:human_player_role])
+        start_single_player_game
+      when 'multiplayer'
+        @players = [Human.new(true, 'first'), Human.new(true, 'second')]
+        start_multiplayer_game
+      end
+    end
+
+    def first_player_role
+      puts
+      player_role = @prompt.select("#{@players[0].player_name}, choose your role", ['Code Maker', 'Code Breaker'])
+      player_role.downcase!
+      clear_screen
+      player_role
+    end
+
+    def distribute_roles
+      role = first_player_role
+      @players[0], @players[1] = @players[1], @players[0] if role == 'code breaker'
+    end
+
+    def start_single_player_game
+      game = MasterMind::SinglePlayerGame.new(@human_player,
+                                              @computer_player,
+                                              @settings[:rounds],
+                                              @settings[:human_player_role])
+      game.play
+      clear_screen || start_single_player_game if game.play_again?
+    end
+
+    def start_multiplayer_game
+      distribute_roles
+      game = MasterMind::MultiplayerGame.new(*@players, @settings[:rounds])
+      game.play
+      clear_screen || start_multiplayer_game if game.play_again?
+    end
+
     def clarify_rules
-      puts
-      puts TTY::Box.frame("#{Board.new.draw('123456', 1, 1)}"\
-                          "- Code maker makes a pattern of four colors, e.g: rrgg, 2211 or redredgreengreen,\n\n"\
-                          "- The code breaker has to figure out this pattern,\n\n"\
-                          "- Available numbers/colors : 1-6 | #{'Green'.green} #{'Red'.red} #{'Yellow'.yellow} #{'Blue'.blue} #{'Magenta'.magenta} #{'Cyan'.cyan}\n\n"\
-                          "- The code maker gives hints, represented by black/white rectangle,\n\n"\
-                          "- Each black one & each white one implies that one of the colors guessed is\n"\
-                          "  in the pattern made by the code maker,\n\n"\
-                          "- Each black one implies that that color is also in the right position\n"\
-                          "  while white ones don't,\n\n"\
-                          "- Order matters, so gryb != byrg,\n\n"\
-                          "- Duplicates are allowed, so rrrr is allowed,\n\n"\
-                          "- Blanks are *not* allowed, so rrr is *not* allowed.\n\n",
-                          padding: [1, 1],
-                          border: :ascii)
-      puts
+      show_guide
       @prompt.keypress('Press any key to continue')
       clear_screen
     end
@@ -65,10 +97,6 @@ module MasterMind
       player_role = @prompt.select('Choose your role', ['Code Maker', 'Code Breaker']).downcase
       clear_screen
       player_role
-    end
-
-    def clear_screen
-      puts "\e[1;1H\e[2J"
     end
   end
 end
