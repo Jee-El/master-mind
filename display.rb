@@ -23,12 +23,6 @@ module MasterMind
       puts
     end
 
-    def clarify_that_the_computer_is_guessing
-      puts
-      puts 'This might take a while, the computer is thinking...'
-      puts
-    end
-
     def announce_winner(winner, is_code_broken)
       bottom_text = " The code was #{is_code_broken ? '' : 'not '}broken! "
       puts

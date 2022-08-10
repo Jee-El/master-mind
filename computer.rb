@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'tty-prompt'
+require 'tty-spinner'
+
 require_relative './hints'
 require_relative './display'
 
@@ -15,8 +17,10 @@ module MasterMind
       @prompt = TTY::Prompt.new
       @player_name = 'Computer'
       if human_player_role == 'code maker'
-        clarify_that_the_computer_is_guessing
+        spinner = TTY::Spinner.new('[:spinner] The computer is warming up...', format: :arrow_pulse)
+        spinner.auto_spin
         setup_for_breaking_secret_code
+        spinner.stop("\n\nThe computer is ready to take you on!")
       end
     end
 
