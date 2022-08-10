@@ -1,6 +1,7 @@
 require 'tty-prompt'
 
 module MasterMind
+  # Text/instructions to display to the player(s)
   module Display
     def show_guide
       puts
