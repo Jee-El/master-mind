@@ -46,7 +46,7 @@ module MasterMind
     def first_player_role
       puts
       player_role = @prompt.select("#{@players[0].player_name}, choose your role", ['Code Maker', 'Code Breaker'])
-      player_role.downcase!
+      player_role = player_role.downcase
       clear_screen
       player_role
     end

@@ -22,6 +22,7 @@ module MasterMind
             "- Duplicates are allowed, so rrrr is allowed,\n\n"\
             "- Blanks are *not* allowed, so rrr is *not* allowed.\n\n".freeze
     REGEX_FOR_VALID_PATTERN = /^(((\s*\d\s*){4})|((\s*[grybmc]\s*){4})|((\s*green\s*|\s*red\s*|\s*yellow\s*|\s*blue\s*|\s*magenta\s*|\s*cyan\s*){4}))$/.freeze
+
     def show_guide
       puts
       Board.new.draw('123456', 1, 1)

@@ -56,7 +56,7 @@ module MasterMind
     private
 
     def guess
-      ask_for_pattern('Enter a pattern of 4 numbers or colors :')
+      ask_for_pattern('Guess by entering a pattern of 4 numbers or colors :')
     end
 
     def ask_for_pattern(phrase)
