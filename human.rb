@@ -27,9 +27,14 @@ module MasterMind
     def make_secret_code(is_multiplayer)
       puts
       @secret_code = if is_multiplayer
-                       @prompt.mask('The code maker must enter the secret code :')
+                       @prompt.ask('The code maker must enter the secret code :') do |q|
+                         q.modify :down
+                         q.modify
+                         q.validate(REGEX_FOR_VALID_PATTERN)
+                         q.messages[:valid?] = INVALID_PATTERN_MESSAGE
+                       end.gsub(' ', '')
                      else
-                       @prompt.ask('Enter your secret code :')
+                       ask_for_pattern('Enter your secret code :')
                      end
       @secret_code = @translator.translate(@secret_code)
       puts
@@ -51,16 +56,15 @@ module MasterMind
     private
 
     def guess
-      @prompt.ask('Enter a pattern of 4 numbers or colors :', required: true) do |q|
+      ask_for_pattern('Enter a pattern of 4 numbers or colors :')
+    end
+
+    def ask_for_pattern(phrase)
+      @prompt.ask(phrase) do |q|
         q.modify :down
         q.modify
-        q.validate(/^(((\s*\d\s*){4})|((\s*[grybmc]\s*){4})|((\s*green\s*|\s*red\s*|\s*yellow\s*|\s*blue\s*|\s*magenta\s*|\s*cyan\s*){4}))$/)
-        q.messages[:valid?] = "The pattern must be made either of :\n\n"\
-                              "- 4 numbers, each number represents a color\n\n"\
-                              "- 4 letters, each letter represents the first letter of the color name\n\n"\
-                              "- 4 words, each word must be a color name\n\n"\
-                              "Available numbers/colors : 1-6 | #{'Green'.green} #{'Red'.red} #{'Yellow'.yellow} "\
-                              "#{'Blue'.blue} #{'Magenta'.magenta} #{'Cyan'.cyan}\n\n\n"
+        q.validate(REGEX_FOR_VALID_PATTERN)
+        q.messages[:valid?] = INVALID_PATTERN_MESSAGE
       end.gsub(' ', '')
     end
   end
