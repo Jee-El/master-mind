@@ -29,7 +29,3 @@ In both modes, you can play either as :
 - The Code Breaker :
 
   You have to figure out the secret code.
-
-## Note
-
-It might not work well if you use replit on mobile due to how the input is taken from the user/player, so trying it on a computer is better. (replit is slow on mobile anyways).

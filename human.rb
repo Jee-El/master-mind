@@ -21,7 +21,6 @@ module MasterMind
       else
         @player_name = @prompt.ask('Enter your name :', default: 'Human')
       end
-      puts
     end
 
     def make_secret_code(is_multiplayer)

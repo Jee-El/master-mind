@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'tty-prompt'
-require 'tty-box'
-require 'colorize'
-
 require_relative './board'
 require_relative './display'
 require_relative './single_player_game'
@@ -24,7 +20,7 @@ module MasterMind
     def build_game
       clarify_rules
       @settings[:game_mode] = game_mode
-      @settings[:rounds] = rounds
+      @settings[:rounds] = game_rounds
       @settings[:human_player_role] = human_player_role if @settings[:game_mode] == 'single player'
       build_players
     end
@@ -43,9 +39,7 @@ module MasterMind
       end
     end
 
-    def first_player_role
-      puts
-      player_role = @prompt.select("#{@players[0].player_name}, choose your role", ['Code Maker', 'Code Breaker'])
+    def first_player_role(player_role)
       player_role = player_role.downcase
       clear_screen
       player_role
@@ -72,29 +66,19 @@ module MasterMind
       clear_screen || start_multiplayer_game if game.play_again?
     end
 
-    def clarify_rules
-      show_guide
-      @prompt.keypress('Press any key to continue')
-      clear_screen
-    end
-
-    def game_mode
-      puts
-      mode = @prompt.select('Choose a game mode', ['Single Player', 'Multiplayer']).downcase
+    def game_mode(mode)
+      mode = mode.downcase
       clear_screen
       mode
     end
 
-    def rounds
-      puts
-      rounds = @prompt.select('Choose how many rounds to play', [4, 6, 8, 10, 12], default: 3)
+    def game_rounds(rounds)
       clear_screen
       rounds
     end
 
-    def human_player_role
-      puts
-      player_role = @prompt.select('Choose your role', ['Code Maker', 'Code Breaker']).downcase
+    def human_player_role(player_role)
+      player_role = player_role.downcase
       clear_screen
       player_role
     end
