@@ -16,7 +16,7 @@ module MasterMind
 
       def ask_for_return_button_press
         puts
-        print 'Press enter (or return) on your keyboard to continue'
+        print 'Press enter (or return) to continue'
       end
 
       def ask_for_first_player_role

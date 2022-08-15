@@ -11,13 +11,11 @@ module MasterMind
 
     def clarify_rules
       show_guide
-      ask_for_return_button_press
-      input = gets.chomp
-      puts
-      until input.empty?
+      loop do
         ask_for_return_button_press
         input = gets.chomp
         puts
+        break if input.empty?
       end
       clear_screen
     end
