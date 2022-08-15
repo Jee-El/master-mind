@@ -13,6 +13,7 @@ module MasterMind
     include Display
 
     def initialize
+      clear_screen
       @settings = {}
       @prompt = TTY::Prompt.new
     end

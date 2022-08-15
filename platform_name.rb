@@ -2,8 +2,6 @@
 
 require 'tty-box'
 
-require_relative './display'
-
 def platform_name
   platform_names_by_numbers = { '1' => 'Phone', '2' => 'Computer' }
   puts TTY::Box.frame("1 -> Phone\n\n2 -> Computer",
@@ -14,6 +12,5 @@ def platform_name
     print 'Enter either the number 1 or 2 : '
     name = gets.chomp
   end
-  clear_screen
   platform_names_by_numbers[name]
 end
