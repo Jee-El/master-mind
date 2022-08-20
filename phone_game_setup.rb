@@ -1,11 +1,18 @@
-require_relative './mobile_display'
+require_relative './phone_display'
 require_relative './game_setup'
 
 module MasterMind
   # Setup specific to mobile
   # tty-prompt doesn't work well on mobile
-  class MobileGameSetup < GameSetup
-    include MobileDisplay
+  class PhoneGameSetup < GameSetup
+    attr_reader :is_phone
+
+    include PhoneDisplay
+
+    def initialize
+      @is_phone = true
+      super
+    end
 
     private
 

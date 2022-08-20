@@ -3,6 +3,8 @@ require 'colorize'
 module MasterMind
   # Handles drawing the code pegs & key pegs
   class Board
+    attr_accessor :board
+
     COLORS_BY_NUMBERS = {
       '1' => :green,
       '2' => :red,
@@ -18,14 +20,12 @@ module MasterMind
       @board = []
     end
 
-    def draw(guess, black_pegs, white_pegs, has_to_show_secret_code: false)
-      puts
-      @board << "#{draw_guess(guess)} | #{draw_hints(black_pegs, white_pegs)}"
+    private
+
+    def draw(has_to_show_secret_code)
       puts has_to_show_secret_code ? @board.last : @board
       @board << ''
     end
-
-    private
 
     def draw_guess(guess)
       code_pegs = ''

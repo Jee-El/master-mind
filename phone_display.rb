@@ -5,10 +5,10 @@ require 'tty-box'
 module MasterMind
   module Display
     # Text/instructions to display to the player(s) on mobile
-    module MobileDisplay
+    module PhoneDisplay
       def show_guide
         puts
-        Board.new.draw('123456', 1, 1)
+        PhoneBoard.new.draw('123456', 1, 1)
         puts
         puts GUIDE
         puts

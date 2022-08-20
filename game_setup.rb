@@ -8,15 +8,7 @@ require_relative './multiplayer_game'
 module MasterMind
   # Setup game mode, human player role, rounds to play
   class GameSetup
-    attr_reader :settings
-
     include Display
-
-    def initialize
-      clear_screen
-      @settings = {}
-      @prompt = TTY::Prompt.new
-    end
 
     def build_game
       clarify_rules
@@ -27,6 +19,12 @@ module MasterMind
     end
 
     private
+
+    def initialize
+      clear_screen
+      @settings = {}
+      @prompt = TTY::Prompt.new
+    end
 
     def build_players
       case @settings[:game_mode]
@@ -52,7 +50,8 @@ module MasterMind
     end
 
     def start_single_player_game
-      game = MasterMind::SinglePlayerGame.new(@human_player,
+      game = MasterMind::SinglePlayerGame.new(is_phone,
+                                              @human_player,
                                               @computer_player,
                                               @settings[:rounds],
                                               @settings[:human_player_role])
@@ -62,7 +61,7 @@ module MasterMind
 
     def start_multiplayer_game
       distribute_roles
-      game = MasterMind::MultiplayerGame.new(*@players, @settings[:rounds])
+      game = MasterMind::MultiplayerGame.new(is_phone, *@players, @settings[:rounds])
       game.play
       clear_screen || start_multiplayer_game if game.play_again?
     end

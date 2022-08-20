@@ -7,9 +7,9 @@ require_relative './computer'
 module MasterMind
   # human vs computer
   class SinglePlayerGame < Game
-    def initialize(player_one, player_two, rounds, role)
+    def initialize(is_phone, player_one, player_two, rounds, role)
       # player_one is always of Human class
-      super(player_one, player_two)
+      super(is_phone, player_one, player_two)
 
       @rounds = rounds
       @role = role

@@ -2,7 +2,8 @@
 
 require 'tty-prompt'
 
-require_relative './board'
+require_relative './computer_board'
+require_relative './phone_board'
 require_relative './display'
 
 module MasterMind
@@ -18,8 +19,8 @@ module MasterMind
 
     attr_reader :board, :player_one, :player_two
 
-    def initialize(player_one, player_two)
-      @board = Board.new
+    def initialize(is_phone, player_one, player_two)
+      @board = is_phone ? PhoneBoard.new : ComputerBoard.new
       # player_one is always of Human class
       @player_one = player_one
       @player_two = player_two

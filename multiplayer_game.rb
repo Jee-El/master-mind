@@ -6,8 +6,8 @@ require_relative './human'
 module MasterMind
   # human vs human
   class MultiplayerGame < Game
-    def initialize(player_one, player_two, rounds)
-      super(player_one, player_two)
+    def initialize(is_phone, player_one, player_two, rounds)
+      super(is_phone, player_one, player_two)
       @rounds = rounds
     end
 

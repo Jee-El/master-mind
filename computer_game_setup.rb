@@ -1,13 +1,20 @@
 require 'tty-prompt'
 
-require_relative './desktop_display'
+require_relative './computer_display'
 require_relative './game_setup'
 
 module MasterMind
   # Setup specific to desktop
   # tty-prompt doesn't work well on mobile
-  class DesktopGameSetup < GameSetup
-    include DesktopDisplay
+  class ComputerGameSetup < GameSetup
+    attr_reader :is_phone
+
+    include ComputerDisplay
+
+    def initialize
+      @is_phone = false
+      super
+    end
 
     private
 
