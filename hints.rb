@@ -25,11 +25,8 @@ module MasterMind
     end
 
     def self.white_pegs(pegs, not_black_pegs_guess, not_black_pegs_secret_code)
-      not_black_pegs_guess.each do |not_black_peg_guess|
-        if not_black_pegs_secret_code.include?(not_black_peg_guess)
-          pegs[:white] += not_black_pegs_secret_code.count(not_black_peg_guess)
-          not_black_pegs_secret_code.delete(not_black_peg_guess)
-        end
+      pegs[:white] += (not_black_pegs_guess + not_black_pegs_secret_code).uniq.reduce(0) do |total, num|
+        total += [not_black_pegs_guess.count(num), not_black_pegs_secret_code.count(num)].min
       end
     end
   end
