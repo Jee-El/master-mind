@@ -28,8 +28,8 @@ module MasterMind
       rounds.times do
         @guess = make_guess
         @made_guesses += 1
-        @hints = @hints_giver.give(@guess, code_maker.secret_code)
-        sleep 1.25
+        @hints = Hints.give(@guess, code_maker.secret_code)
+        sleep 1.2
         clear_screen
         board.draw(@guess, *@hints)
         return [player_name, true] if @hints == [4, 0]
@@ -40,7 +40,6 @@ module MasterMind
     private
 
     def setup_for_breaking_secret_code
-      @hints_giver = HintsGiver.new
       build_all_possible_codes
     end
 
@@ -57,7 +56,7 @@ module MasterMind
     end
 
     def remove_impossible_guesses
-      @all_possible_codes.keep_if { |code| @hints_giver.give(@guess, code) == @hints }
+      @all_possible_codes.keep_if { |code| Hints.give(@guess, code) == @hints }
     end
   end
 end

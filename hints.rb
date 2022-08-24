@@ -2,8 +2,8 @@
 
 module MasterMind
   # Give hints to the code breaker
-  class HintsGiver
-    def give(guess, secret_code)
+  class Hints
+    def self.give(guess, secret_code)
       not_black_pegs_guess = []
       not_black_pegs_secret_code = []
       pegs = { black: 0, white: 0 }
@@ -15,7 +15,7 @@ module MasterMind
 
     private
 
-    def black_pegs(pegs, guess_secret_code_pairs, not_black_pegs_guess, not_black_pegs_secret_code)
+    def self.black_pegs(pegs, guess_secret_code_pairs, not_black_pegs_guess, not_black_pegs_secret_code)
       guess_secret_code_pairs.each do |pair|
         next pegs[:black] += 1 if pair[0] == pair[1]
 
@@ -24,7 +24,7 @@ module MasterMind
       end
     end
 
-    def white_pegs(pegs, not_black_pegs_guess, not_black_pegs_secret_code)
+    def self.white_pegs(pegs, not_black_pegs_guess, not_black_pegs_secret_code)
       not_black_pegs_guess.each do |not_black_peg_guess|
         if not_black_pegs_secret_code.include?(not_black_peg_guess)
           pegs[:white] += not_black_pegs_secret_code.count(not_black_peg_guess)

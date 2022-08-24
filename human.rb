@@ -40,11 +40,10 @@ module MasterMind
     end
 
     def break_secret_code(code_maker, rounds, board)
-      hints_giver = HintsGiver.new
       rounds.times do
         puts
         guess = @translator.translate(self.guess)
-        hints = hints_giver.give(guess, code_maker.secret_code)
+        hints = Hints.give(guess, code_maker.secret_code)
         clear_screen
         board.draw(guess, *hints)
         return [player_name, true] if hints == [4, 0]
