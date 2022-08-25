@@ -7,7 +7,7 @@ def platform_name
   puts
   puts TTY::Box.frame("1 -> Phone\n\n2 -> Computer",
                       padding: [1, 1],
-                      title: { top_center: ' Are you on a phone or a computer? ' })
+                      title: { top_center: ' What device are you using? ' })
   loop do
     name = gets.chomp
     break platform_names_by_numbers[name] if name.strip.match?(/^(1|2)$/)
