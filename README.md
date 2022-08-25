@@ -4,7 +4,7 @@
 
 - Login not required :
 
-  [Replit](https://replit.com/@Jee-El/master-mind?v=1)
+  [Replit](https://replit.com/@Jee-El/Master-Mind-terminal?v=1)
 
 - Login required :
 
