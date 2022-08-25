@@ -114,12 +114,11 @@ module MasterMind
     end
 
     def hints_frequency(hints_by_secret_codes)
-      frequency_by_hints = hints_by_secret_codes.keys.group_by { |k| hints_by_secret_codes[k] }
-      frequency_by_hints.values.map(&:length)
+      hints_by_secret_codes.keys.group_by { |k| hints_by_secret_codes[k] }
     end
 
     def highest_frequency(hints_by_secret_codes)
-      hints_frequency(hints_by_secret_codes).max
+      hints_frequency(hints_by_secret_codes).values.max_by(&:length).length
     end
   end
 end
