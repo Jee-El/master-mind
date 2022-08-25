@@ -24,7 +24,7 @@ module MasterMind
 
     private_class_method def self.white_pegs(pegs, not_black_pegs_guess, not_black_pegs_secret_code)
       pegs[:white] += (not_black_pegs_guess + not_black_pegs_secret_code).uniq.reduce(0) do |total, num|
-        total += [not_black_pegs_guess.count(num), not_black_pegs_secret_code.count(num)].min
+        total + [not_black_pegs_guess.count(num), not_black_pegs_secret_code.count(num)].min
       end
     end
   end

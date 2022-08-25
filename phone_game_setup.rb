@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './phone_display'
 require_relative './game_setup'
 

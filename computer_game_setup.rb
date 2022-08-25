@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'tty-prompt'
 
 require_relative './computer_display'

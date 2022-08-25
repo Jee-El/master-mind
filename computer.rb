@@ -56,7 +56,7 @@ module MasterMind
     end
 
     def setup_for_breaking_secret_code
-      @spinner = TTY::Spinner.new("[:spinner] This will take a while ...")
+      @spinner = TTY::Spinner.new('[:spinner] This will take a while ...')
       start_loading_screen
       build_all_possible_codes
       build_all_possible_hints
