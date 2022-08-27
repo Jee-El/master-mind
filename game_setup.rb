@@ -10,6 +10,12 @@ module MasterMind
   class GameSetup
     include Display
 
+    def initialize
+      clear_screen
+      @settings = {}
+      @prompt = TTY::Prompt.new
+    end
+
     def build_game
       clarify_rules
       @settings[:game_mode] = game_mode
@@ -19,12 +25,6 @@ module MasterMind
     end
 
     private
-
-    def initialize
-      clear_screen
-      @settings = {}
-      @prompt = TTY::Prompt.new
-    end
 
     def build_players
       case @settings[:game_mode]

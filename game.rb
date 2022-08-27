@@ -11,6 +11,13 @@ module MasterMind
   class Game
     include Display
 
+    def initialize(is_phone, player_one, player_two)
+      @board = is_phone ? PhoneBoard.new : ComputerBoard.new
+      # player_one is always of Human class
+      @player_one = player_one
+      @player_two = player_two
+    end
+
     def play_again?
       TTY::Prompt.new.yes?('Play again?')
     end
@@ -18,13 +25,6 @@ module MasterMind
     private
 
     attr_reader :board, :player_one, :player_two
-
-    def initialize(is_phone, player_one, player_two)
-      @board = is_phone ? PhoneBoard.new : ComputerBoard.new
-      # player_one is always of Human class
-      @player_one = player_one
-      @player_two = player_two
-    end
 
     def game_over(winner)
       unless winner[1]
