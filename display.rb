@@ -29,11 +29,13 @@ module MasterMind
     def announce_winner(winner, is_code_broken)
       bottom_text = " The code was #{is_code_broken ? '' : 'not '}broken! "
       puts
-      puts TTY::Box.success(winner,
-                            padding: [1, 1],
-                            align: :center,
-                            border: :ascii,
-                            title: { top_center: 'The Winner Is', bottom_center: bottom_text })
+      puts TTY::Box.success(
+        winner,
+        padding: [1, 1],
+        align: :center,
+        border: :ascii,
+        title: { top_center: 'The Winner Is', bottom_center: bottom_text }
+      )
       puts
     end
 
