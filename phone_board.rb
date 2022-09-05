@@ -2,6 +2,7 @@ require_relative './board'
 
 module MasterMind
   # Adjusts the board for small screens
+  # For replit on mobile
   class PhoneBoard < Board
     def draw(guess, black_pegs, white_pegs, has_to_show_secret_code: false)
       puts

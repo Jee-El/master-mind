@@ -3,6 +3,8 @@
 require 'tty-box'
 
 module MasterMind
+  # Gets the name of the device
+  # to choose which game_setup to instantiate
   module PlatformName
     def self.get
       platform_names_by_numbers = { '1' => 'Phone', '2' => 'Computer' }
