@@ -27,11 +27,10 @@ module MasterMind
       puts
       @secret_code = if is_multiplayer
                        @prompt.ask('The code maker must enter the secret code :') do |q|
-                         q.modify :down
-                         q.modify
+                         q.modify :remove, :down
                          q.validate(REGEX_FOR_VALID_PATTERN)
                          q.messages[:valid?] = INVALID_PATTERN_MESSAGE
-                       end.gsub(' ', '')
+                       end
                      else
                        ask_for_pattern('Enter your secret code :')
                      end
@@ -59,11 +58,10 @@ module MasterMind
 
     def ask_for_pattern(phrase)
       @prompt.ask(phrase) do |q|
-        q.modify :down
-        q.modify
+        q.modify :remove, :down
         q.validate(REGEX_FOR_VALID_PATTERN)
         q.messages[:valid?] = INVALID_PATTERN_MESSAGE
-      end.gsub(' ', '')
+      end
     end
   end
 end
