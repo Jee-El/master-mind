@@ -90,12 +90,14 @@ module MasterMind
     end
 
     def remove_impossible_guesses
-      @all_possible_codes.keep_if { |code| @all_hints[@guess][code] == @hints }
+      @all_possible_codes.keep_if do |code|
+        @all_possible_hints[@guess][code] == @hints
+      end
     end
 
     def knuth_algorithm
       guesses = @all_possible_hints.map do |guess, hints_by_secret_codes|
-        remove_impossible_secret_codes(guess, hints_by_secret_codes)
+        hints_by_secret_codes = remove_impossible_secret_codes(guess, hints_by_secret_codes)
 
         score = highest_frequency(hints_by_secret_codes)
 
@@ -113,12 +115,8 @@ module MasterMind
       @all_possible_hints[guess] = hints_by_secret_codes
     end
 
-    def hints_frequency(hints_by_secret_codes)
-      hints_by_secret_codes.keys.group_by { |k| hints_by_secret_codes[k] }
-    end
-
     def highest_frequency(hints_by_secret_codes)
-      hints_frequency(hints_by_secret_codes).values.max_by(&:length).length
+      hints_by_secret_codes.values.tally.values.max
     end
   end
 end
