@@ -34,6 +34,7 @@ module MasterMind
         start_single_player_game
       when 'multiplayer'
         @players = [Human.new(true, 'first'), Human.new(true, 'second')]
+        distribute_roles
         start_multiplayer_game
       end
     end
@@ -50,17 +51,18 @@ module MasterMind
     end
 
     def start_single_player_game
-      game = MasterMind::SinglePlayerGame.new(is_phone,
-                                              @human_player,
-                                              @computer_player,
-                                              @settings[:rounds],
-                                              @settings[:human_player_role])
+      game = MasterMind::SinglePlayerGame.new(
+        is_phone,
+        @human_player,
+        @computer_player,
+        @settings[:rounds],
+        @settings[:human_player_role]
+      )
       game.play
       clear_screen || start_single_player_game if game.play_again?
     end
 
     def start_multiplayer_game
-      distribute_roles
       game = MasterMind::MultiplayerGame.new(is_phone, *@players, @settings[:rounds])
       game.play
       clear_screen || start_multiplayer_game if game.play_again?

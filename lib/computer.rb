@@ -64,7 +64,7 @@ module MasterMind
     end
 
     def build_all_possible_codes
-      @all_codes = [*(1..6)].repeated_permutation(4).to_a.map(&:join)
+      @all_codes = [*(1..6)].repeated_permutation(4).map(&:join)
     end
 
     def build_all_possible_hints
