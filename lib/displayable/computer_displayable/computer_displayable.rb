@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module MasterMind
-  module Display
+  module Displayable
     # Text/instructions to display to the player(s) on desktop
-    module ComputerDisplay
+    module ComputerDisplayable
       def show_guide
         puts
         ComputerBoard.new.draw('123456', 1, 1)

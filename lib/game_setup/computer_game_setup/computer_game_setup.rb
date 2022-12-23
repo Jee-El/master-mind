@@ -2,8 +2,8 @@
 
 require 'tty-prompt'
 
-require_relative './computer_display'
-require_relative './game_setup'
+require_relative '../../displayable/computer_displayable/computer_displayable'
+require_relative '../game_setup'
 
 module MasterMind
   # Setup specific to desktop
@@ -11,7 +11,7 @@ module MasterMind
   class ComputerGameSetup < GameSetup
     attr_reader :is_phone
 
-    include ComputerDisplay
+    include ComputerDisplayable
 
     def initialize
       @is_phone = false

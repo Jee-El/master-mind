@@ -2,14 +2,14 @@
 
 require 'tty-prompt'
 
-require_relative './computer_board'
-require_relative './phone_board'
-require_relative './display'
+require_relative '../board/computer_board/computer_board'
+require_relative '../board/phone_board/phone_board'
+require_relative '../displayable/displayable'
 
 module MasterMind
   # A game of master mind
   class Game
-    include Display
+    include Displayable
 
     def initialize(is_phone, player_one, player_two)
       @board = is_phone ? PhoneBoard.new : ComputerBoard.new

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative './game'
-require_relative './human'
+require_relative '../game'
+require_relative '../../human/human'
 
 module MasterMind
   # human vs human

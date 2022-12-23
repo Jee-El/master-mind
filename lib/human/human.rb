@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 require 'tty-prompt'
-require_relative './hints'
-require_relative './translator'
-require_relative './display'
+require_relative '../hints/hints'
+require_relative '../translator/translator'
+require_relative '../displayable/displayable'
 
 module MasterMind
   # The human player
   class Human
     attr_reader :secret_code, :player_name
 
-    include Display
+    include Displayable
 
     def initialize(is_multiplayer, first_or_second_player = nil)
       @translator = Translator.new

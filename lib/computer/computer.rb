@@ -3,15 +3,15 @@
 require 'tty-spinner'
 require 'tty-prompt'
 
-require_relative './hints'
-require_relative './display'
+require_relative '../hints/hints'
+require_relative '../displayable/displayable'
 
 module MasterMind
   # The computer players
   class Computer
     attr_reader :secret_code, :player_name
 
-    include Display
+    include Displayable
 
     def initialize(human_player_role)
       @prompt = TTY::Prompt.new

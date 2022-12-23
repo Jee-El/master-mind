@@ -5,7 +5,7 @@ require 'colorize'
 
 module MasterMind
   # Text/instructions to display to the player(s)
-  module Display
+  module Displayable
     INVALID_PATTERN_MESSAGE = "The pattern must be made either of :\n\n"\
                               "- 4 numbers, each number represents a color\n\n"\
                               "- 4 letters, each letter represents the first letter of the color name\n\n"\

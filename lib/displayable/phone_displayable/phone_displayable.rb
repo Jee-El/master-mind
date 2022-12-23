@@ -3,9 +3,9 @@
 require 'tty-box'
 
 module MasterMind
-  module Display
+  module Displayable
     # Text/instructions to display to the player(s) on mobile
-    module PhoneDisplay
+    module PhoneDisplayable
       ROLES_BY_NUMS = "1 -> Code Maker\n\n2 -> Code Breaker"
       GAME_MODES_BY_NUMS = "1 -> Single Player\n\n2 -> Multiplayer"
 

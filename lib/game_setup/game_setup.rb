@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require_relative './board'
-require_relative './display'
-require_relative './single_player_game'
-require_relative './multiplayer_game'
+require_relative '../board/board'
+require_relative '../displayable/displayable'
+require_relative '../game/single_player_game/single_player_game'
+require_relative '../game/multiplayer_game/multiplayer_game'
 
 module MasterMind
   # Setup game mode, human player role, rounds to play
   class GameSetup
-    include Display
+    include Displayable
 
     def initialize
       clear_screen

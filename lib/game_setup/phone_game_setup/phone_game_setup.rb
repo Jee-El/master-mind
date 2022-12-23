@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative './phone_display'
-require_relative './game_setup'
+require_relative '../../displayable/phone_displayable/phone_displayable'
+require_relative '../game_setup'
 
 module MasterMind
   # Setup specific to mobile
@@ -9,7 +9,7 @@ module MasterMind
   class PhoneGameSetup < GameSetup
     attr_reader :is_phone
 
-    include PhoneDisplay
+    include PhoneDisplayable
 
     def initialize
       @is_phone = true
